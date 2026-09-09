@@ -437,7 +437,7 @@
 
 
     clock.textContent =
-      `${place.shortName}:: ` +
+      `${place.shortName} :: ` +
       `${year}-${month}-${day}, ` +
       `${hour}:${minute}:${second} ` +
       `${period}`;
