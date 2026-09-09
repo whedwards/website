@@ -64,7 +64,7 @@ button { font: inherit; color: inherit; }
   background: transparent;
   perspective: 1400px;
   cursor: pointer;
-  transform: rotate(-1.1deg);
+  transform: none;
 }
 
 .postcard-inner {
