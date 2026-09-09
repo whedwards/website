@@ -18,7 +18,12 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--green);
-  font-family: Georgia, "Times New Roman", serif;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
   line-height: 1.45;
 }
 
@@ -29,87 +34,183 @@ a {
 }
 
 button {
-  font: inherit;
   color: inherit;
+  font: inherit;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 
-/* =========================
+/* ========================================
    HEADER
-   ========================= */
+   ======================================== */
 
 .site-header {
   width: min(1120px, calc(100% - 40px));
   margin: 18px auto 0;
-  display: flex;
-  justify-content: center;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+
   font-size: 15px;
 }
 
+
+/*
+  Keeping the nav in the middle grid column
+  means it stays genuinely centered even
+  though the location control is on the right.
+*/
+
 .site-header nav {
+  grid-column: 2;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 20px;
-  flex-wrap: wrap;
 }
 
 
-/* =========================
-   HOME / POSTCARD
-   ========================= */
+/* ========================================
+   LOCATION SWITCH
+   ======================================== */
+
+.place-switch {
+  grid-column: 3;
+  justify-self: end;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 13px;
+}
+
+.place-option {
+  appearance: none;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: inherit;
+
+  cursor: pointer;
+
+  opacity: .52;
+
+  text-decoration: none;
+
+  transition:
+    opacity .15s ease;
+}
+
+.place-option.is-active {
+  opacity: 1;
+}
+
+.place-option:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+
+/* ========================================
+   HOME
+   ======================================== */
 
 .hero {
   width: min(880px, calc(100% - 40px));
-  margin: 72px auto 140px;
+
+  margin:
+    72px
+    auto
+    150px;
+
   text-align: center;
 }
 
+
+/* ========================================
+   NAME
+   ======================================== */
+
 .home-title {
-  margin: 0 0 16px;
-  text-align: center;
+  margin:
+    0
+    0
+    16px;
+
   font-size: 28px;
   font-weight: 600;
   line-height: 1.2;
+
+  text-align: center;
 }
+
+
+/* ========================================
+   POSTCARD
+   ======================================== */
 
 .postcard-stage {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 0;
 }
 
 .postcard {
   width: min(620px, 88vw);
+
   aspect-ratio: 1.53;
-  border: 0;
-  padding: 0;
+
   margin: 0;
+  padding: 0;
+
+  border: 0;
   background: transparent;
+
   perspective: 1400px;
+
   cursor: pointer;
 
-  /* Keep the postcard perfectly straight */
+  /*
+    The physical postcard remains perfectly
+    level. No decorative slant.
+  */
   transform: none;
 }
 
 .postcard-inner {
   display: block;
+
+  position: relative;
+
   width: 100%;
   height: 100%;
-  position: relative;
+
   transform-style: preserve-3d;
+
   transition:
     transform .72s cubic-bezier(.2, .68, .22, 1),
-    filter .2s ease;
+    filter .18s ease;
 
-  filter: drop-shadow(0 10px 12px rgba(20, 32, 25, .14));
-}
-
-.postcard:hover .postcard-inner {
-  filter: drop-shadow(0 13px 15px rgba(20, 32, 25, .17));
+  filter:
+    drop-shadow(
+      0
+      9px
+      11px
+      rgba(20, 32, 25, .13)
+    );
 }
 
 .postcard.is-flipped .postcard-inner {
@@ -119,15 +220,20 @@ button {
 .postcard-face {
   position: absolute;
   inset: 0;
+
   display: block;
+
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-.postcard-front img {
+.postcard-front img,
+.postcard-back-image {
   display: block;
+
   width: 100%;
   height: 100%;
+
   object-fit: contain;
 }
 
@@ -136,52 +242,211 @@ button {
 }
 
 
-/* =========================
+/* ========================================
+   SUBTLE CORNER LIFT
+   ======================================== */
+
+/*
+  This appears only on devices that actually
+  have a mouse/trackpad hover state.
+
+  It doesn't bend or warp the whole photograph.
+  It just suggests the top-right corner has
+  lifted slightly from the surface.
+*/
+
+@media (hover: hover) and (pointer: fine) {
+
+  .postcard-face::before,
+  .postcard-face::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 25px;
+    height: 25px;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform-origin: top right;
+
+    transition:
+      opacity .16s ease,
+      transform .16s ease;
+  }
+
+
+  /*
+    Tiny shadow beneath the lifted corner.
+  */
+
+  .postcard-face::before {
+    z-index: 2;
+
+    clip-path:
+      polygon(
+        100% 0,
+        0 0,
+        100% 100%
+      );
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(30, 26, 20, .17),
+        rgba(30, 26, 20, 0)
+      );
+
+    filter: blur(2px);
+
+    transform:
+      translate(
+        2px,
+        2px
+      );
+  }
+
+
+  /*
+    The visible underside of the little fold.
+  */
+
+  .postcard-face::after {
+    z-index: 3;
+
+    clip-path:
+      polygon(
+        100% 0,
+        0 0,
+        100% 100%
+      );
+
+    background:
+      linear-gradient(
+        135deg,
+        #f7f2e8 0%,
+        #e8dfcf 100%
+      );
+
+    border-left:
+      1px solid
+      rgba(70, 59, 43, .10);
+
+    transform:
+      perspective(180px)
+      rotateX(0deg)
+      rotateY(0deg);
+  }
+
+
+  .postcard:hover .postcard-face::before,
+  .postcard:hover .postcard-face::after {
+    opacity: 1;
+  }
+
+
+  .postcard:hover .postcard-face::after {
+    transform:
+      perspective(180px)
+      rotateX(13deg)
+      rotateY(-13deg)
+      translate(-1px, 1px);
+  }
+
+
+  .postcard:hover .postcard-inner {
+    filter:
+      drop-shadow(
+        0
+        11px
+        13px
+        rgba(20, 32, 25, .15)
+      );
+  }
+}
+
+
+/* ========================================
    TEMPORARY POSTCARD BACK
-   ========================= */
+   ======================================== */
 
 .back-paper {
   position: absolute;
+
   inset: 2%;
+
   background: #e9e0ca;
-  border: 1px solid rgba(84, 68, 43, .25);
+
+  border:
+    1px solid
+    rgba(84, 68, 43, .25);
+
   overflow: hidden;
 }
 
 .back-top {
   position: absolute;
+
   top: 8%;
   left: 42%;
-  font-size: clamp(16px, 2vw, 25px);
-  letter-spacing: .12em;
+
   color: #786a52;
+
+  font-size:
+    clamp(
+      16px,
+      2vw,
+      25px
+    );
+
+  letter-spacing: .12em;
 }
 
 .back-divider {
   position: absolute;
+
   left: 49%;
   top: 13%;
   bottom: 9%;
-  border-left: 1px solid rgba(94, 81, 61, .45);
+
+  border-left:
+    1px solid
+    rgba(94, 81, 61, .45);
 }
 
 .stamp-box {
   position: absolute;
+
   right: 6%;
   top: 8%;
-  border: 1px solid rgba(94, 81, 61, .45);
+
   width: 17%;
+
   aspect-ratio: 1.2;
+
   display: grid;
   place-items: center;
-  font-size: 11px;
+
   color: #8f816b;
+
+  font-size: 11px;
+
+  border:
+    1px solid
+    rgba(94, 81, 61, .45);
 }
 
 .message-lines {
   position: absolute;
+
   left: 7%;
   top: 27%;
+
   width: 34%;
   height: 45%;
 
@@ -195,148 +460,159 @@ button {
 
 .privacy-tape {
   position: absolute;
+
   right: 8%;
   top: 46%;
+
   width: 34%;
-  padding: 12px 10px;
-  transform: rotate(-1.5deg);
+
+  padding:
+    12px
+    10px;
+
+  transform:
+    rotate(-1.5deg);
+
   background: #d9c7a3;
-  color: rgba(74, 61, 44, .55);
-  font-family: Arial, sans-serif;
+
+  color:
+    rgba(
+      74,
+      61,
+      44,
+      .55
+    );
+
+  font-family:
+    Arial,
+    sans-serif;
+
   font-size: 11px;
+
   text-align: center;
-  box-shadow: 0 1px 2px rgba(67, 52, 33, .12);
+
+  box-shadow:
+    0
+    1px
+    2px
+    rgba(67, 52, 33, .12);
 }
 
 
-/* =========================
-   CLOCK + LOCATION
-   ========================= */
+/* ========================================
+   CLOCK
+   ======================================== */
 
-.postcard-meta {
-  margin-top: 14px;
+.clock-line {
+  margin:
+    14px
+    0
+    0;
+
   padding: 0;
-  border: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
   text-align: center;
-}
 
-.clock-line,
-.postcard-meta #clock {
-  margin: 0;
-  padding: 0;
-  text-align: center;
   font-size: 16px;
   font-weight: 600;
-  font-variant-numeric: tabular-nums;
+
+  font-variant-numeric:
+    tabular-nums;
 }
 
 
-/* =========================
-   CITY SWITCH
-   ========================= */
-
-.text-button,
-.footer-switch,
-.postcard-index button {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-
-.postcard-meta .text-button {
-  margin-top: 8px;
-  font-size: 13px;
-}
-
-
-/* =========================
-   POSTCARD INDEX
-   ========================= */
-
-.postcard-index {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  margin-top: 13px;
-
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.hint {
-  margin: 7px 0 0;
-  text-align: center;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-
-/* =========================
+/* ========================================
    GENERAL CONTENT
-   ========================= */
+   ======================================== */
 
 .content-section {
-  width: min(1120px, calc(100% - 40px));
-  margin: 0 auto 150px;
+  width:
+    min(
+      1120px,
+      calc(100% - 40px)
+    );
+
+  margin:
+    0
+    auto
+    150px;
 }
 
 .eyebrow {
-  font-size: 14px;
   margin-bottom: 34px;
+
+  font-size: 14px;
+
   text-transform: lowercase;
 }
 
 
-/* =========================
+/* ========================================
    BOARD
-   ========================= */
+   ======================================== */
 
 .board-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 34px 26px;
+
+  grid-template-columns:
+    repeat(
+      12,
+      1fr
+    );
+
+  gap:
+    34px
+    26px;
+
   align-items: start;
 }
 
 .board-item {
   margin: 0;
-  grid-column: span 4;
+
+  grid-column:
+    span 4;
 }
 
 .board-item.tall {
-  grid-column: span 3;
+  grid-column:
+    span 3;
 }
 
 .board-item.wide {
-  grid-column: span 5;
+  grid-column:
+    span 5;
 }
 
 .board-item.small {
-  grid-column: span 2;
+  grid-column:
+    span 2;
+
   margin-top: 80px;
 }
 
 .board-placeholder {
   aspect-ratio: 4 / 3;
-  border: 1px solid var(--line);
+
   display: grid;
   place-items: center;
-  color: var(--muted);
+
+  border:
+    1px solid
+    var(--line);
+
+  color:
+    var(--muted);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .25
+    );
+
   font-style: italic;
-  background: rgba(255, 255, 255, .25);
 }
 
 .tall .board-placeholder {
@@ -352,9 +628,9 @@ button {
 }
 
 
-/* =========================
+/* ========================================
    WORK / ABOUT
-   ========================= */
+   ======================================== */
 
 .text-section {
   max-width: 760px;
@@ -362,10 +638,20 @@ button {
 
 .work-list article {
   display: grid;
-  grid-template-columns: 70px 1fr;
+
+  grid-template-columns:
+    70px
+    1fr;
+
   gap: 22px;
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
+
+  padding:
+    18px
+    0;
+
+  border-top:
+    1px solid
+    var(--line);
 }
 
 .work-list h2,
@@ -380,83 +666,153 @@ button {
 
 .work-list p {
   margin-top: 4px;
-  color: var(--muted);
+
+  color:
+    var(--muted);
 }
 
 .year {
-  color: var(--muted);
+  color:
+    var(--muted);
 }
 
 
-/* =========================
+/* ========================================
    FOOTER
-   ========================= */
+   ======================================== */
 
 .site-footer {
   position: relative;
-  background: var(--green);
-  color: var(--cream);
+
+  min-height: 400px;
+
+  overflow: hidden;
 
   padding:
     60px
-    max(20px, calc((100% - 1120px) / 2))
+    max(
+      20px,
+      calc(
+        (100% - 1120px) / 2
+      )
+    )
     52px;
 
-  min-height: 400px;
-  overflow: hidden;
+  background:
+    var(--green);
+
+  color:
+    var(--cream);
 }
 
 .footer-index {
   display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(
+        120px,
+        1fr
+      )
+    );
+
   gap: 36px;
+
   max-width: 900px;
 }
 
 .footer-index h2 {
-  margin: 0 0 12px;
+  margin:
+    0
+    0
+    12px;
+
   font-size: 14px;
+
   text-transform: uppercase;
+
   letter-spacing: .05em;
 }
 
 .footer-index a,
 .footer-switch {
   display: block;
-  margin: 5px 0;
+
+  margin:
+    5px
+    0;
+
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color:
+    var(--cream);
+
+  font: inherit;
   font-size: 14px;
-  color: var(--cream);
+
   text-align: left;
 }
 
 .footer-switch {
+  cursor: pointer;
+
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .footer-doodle {
   position: absolute;
-  right: max(20px, calc((100% - 1120px) / 2));
+
+  right:
+    max(
+      20px,
+      calc(
+        (100% - 1120px) / 2
+      )
+    );
+
   bottom: 30px;
+
   width: 190px;
-  color: var(--cream);
-  transform: rotate(-5deg);
+
+  color:
+    var(--cream);
+
+  transform:
+    rotate(-5deg);
+
   opacity: .96;
 }
 
 
-/* =========================
+/* ========================================
    MOBILE
-   ========================= */
+   ======================================== */
 
 @media (max-width: 760px) {
 
   .site-header {
-    justify-content: center;
+    grid-template-columns: 1fr;
+
+    gap: 12px;
   }
 
   .site-header nav {
+    grid-column: 1;
+
     justify-content: center;
+
     gap: 14px;
+  }
+
+  .place-switch {
+    grid-column: 1;
+
+    justify-self: center;
   }
 
   .hero {
@@ -465,50 +821,53 @@ button {
   }
 
   .home-title {
-    font-size: 24px;
     margin-bottom: 14px;
-  }
 
-  .postcard-stage {
-    min-height: 0;
+    font-size: 24px;
   }
 
   .postcard {
-    width: min(94vw, 620px);
+    width:
+      min(
+        94vw,
+        620px
+      );
   }
 
-  .postcard-meta {
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .clock-line,
-  .postcard-meta #clock {
-    text-align: center;
+  .clock-line {
     font-size: 14px;
   }
 
   .board-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 16px;
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap:
+      24px
+      16px;
   }
 
   .board-item,
   .board-item.tall,
   .board-item.wide,
   .board-item.small {
-    grid-column: span 1;
+    grid-column:
+      span 1;
+
     margin-top: 0;
   }
 
   .board-item.wide {
-    grid-column: 1 / -1;
+    grid-column:
+      1 / -1;
   }
 
   .footer-index {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      1fr
+      1fr;
+
     padding-bottom: 150px;
   }
 
@@ -518,9 +877,9 @@ button {
 }
 
 
-/* =========================
+/* ========================================
    REDUCED MOTION
-   ========================= */
+   ======================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -528,7 +887,10 @@ button {
     scroll-behavior: auto;
   }
 
-  .postcard-inner {
+  .postcard-inner,
+  .postcard-face::before,
+  .postcard-face::after {
     transition: none;
   }
+
 }
