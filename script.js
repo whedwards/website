@@ -3,6 +3,7 @@
   const places = {
     galesburg: {
       name: "Galesburg, Illinois",
+      shortName: "Galesburg",
       tz: "America/Chicago",
       lat: 40.9478,
       lon: -90.3712,
@@ -11,7 +12,7 @@
     },
     stanford: {
       name: "Stanford, California",
-      tz: "America/Los_Angeles",
+      shortName: "Stanford",
       lat: 37.4275,
       lon: -122.1697,
       switchLabel: "← see Galesburg",
@@ -53,16 +54,31 @@
   }
 
   function tick() {
-    const p = places[activePlace];
-    const now = new Date();
-    const formatted = new Intl.DateTimeFormat("en-US", {
-      timeZone: p.tz,
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit"
-    }).format(now);
-    clock.textContent = formatted;
-  }
+  const p = places[activePlace];
+  const now = new Date();
+
+  const datePart = new Intl.DateTimeFormat("en-CA", {
+    timeZone: p.tz,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(now);
+
+  const timePart = new Intl.DateTimeFormat("en-US", {
+    timeZone: p.tz,
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true
+  }).format(now);
+
+  const formattedTime = timePart
+    .replace("AM", "a.m.")
+    .replace("PM", "p.m.");
+
+  document.getElementById("clock-line").textContent =
+    `${p.shortName}:: ${datePart}, ${formattedTime}`;
+}
 
   function setPlace(place) {
     activePlace = place;
