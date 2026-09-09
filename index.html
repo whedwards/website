@@ -18,23 +18,48 @@
 <body>
 
   <header class="site-header">
+
     <nav aria-label="Primary navigation">
       <a href="#home">Home</a>
       <a href="#board">Board</a>
       <a href="#work">Work</a>
       <a href="#about">About</a>
     </nav>
+
+    <div class="place-switch" aria-label="Postcard location">
+
+      <button
+        class="place-option"
+        type="button"
+        data-place="galesburg"
+      >
+        Galesburg
+      </button>
+
+      <span aria-hidden="true">/</span>
+
+      <button
+        class="place-option"
+        type="button"
+        data-place="stanford"
+      >
+        Stanford
+      </button>
+
+    </div>
+
   </header>
 
 
   <main>
 
     <!-- HOME -->
-    <section id="home" class="hero" aria-labelledby="home-title">
+    <section id="home" class="hero">
 
-      <h1 id="home-title" class="home-title">
+      <h1 class="home-title">
         William Henry Edwards
       </h1>
+
 
       <div class="postcard-stage">
 
@@ -42,24 +67,46 @@
           class="postcard"
           id="postcard"
           type="button"
-          aria-label="Flip postcard"
+          aria-label="Turn postcard over"
         >
 
           <span class="postcard-inner">
 
             <!-- FRONT -->
             <span class="postcard-face postcard-front">
+
               <img
                 id="front-image"
                 src="assets/galesburg-front.png"
                 alt="Vintage linen postcard from Galesburg"
               >
+
             </span>
 
-            <!-- BACK -->
-            <span class="postcard-face postcard-back" aria-hidden="true">
 
-              <span class="back-paper">
+            <!-- BACK -->
+            <span class="postcard-face postcard-back">
+
+              <!--
+                This image stays hidden until a real back scan
+                is assigned in script.js.
+              -->
+              <img
+                id="back-image"
+                class="postcard-back-image"
+                alt=""
+                hidden
+              >
+
+
+              <!--
+                Temporary stand-in until your real mailed
+                postcard backs are photographed.
+              -->
+              <span
+                id="back-placeholder"
+                class="back-paper"
+              >
 
                 <span class="back-top">
                   POST CARD
@@ -88,52 +135,13 @@
       </div>
 
 
-      <!-- LOCATION + LIVE CLOCK -->
-      <div class="postcard-meta">
-
-        <p id="clock" class="clock-line" aria-live="polite">
-          Galesburg:: 2025-11-05, 7:10:13 p.m.
-        </p>
-
-        <button
-          id="switch-place"
-          class="text-button"
-          type="button"
-        >
-          see Stanford →
-        </button>
-
-      </div>
-
-
-      <!-- POSTCARD SELECTOR -->
-      <div class="postcard-index" aria-label="Postcard index">
-
-        <button
-          type="button"
-          id="prev-card"
-          aria-label="Previous postcard"
-        >
-          ←
-        </button>
-
-        <span id="card-count">
-          1 / 5
-        </span>
-
-        <button
-          type="button"
-          id="next-card"
-          aria-label="Next postcard"
-        >
-          →
-        </button>
-
-      </div>
-
-
-      <p class="hint">
-        click the postcard to turn it over
+      <!-- LIVE CLOCK -->
+      <p
+        id="clock"
+        class="clock-line"
+        aria-live="polite"
+      >
+        Galesburg:: —
       </p>
 
     </section>
@@ -201,14 +209,16 @@
           </span>
 
           <div>
+
             <h2>
               Selected project
             </h2>
 
             <p>
-              A short description can live here without turning the page
-              into a conventional portfolio card.
+              A short description can live here without turning
+              the page into a conventional portfolio.
             </p>
+
           </div>
 
         </article>
@@ -221,13 +231,16 @@
           </span>
 
           <div>
+
             <h2>
               Manufacturing / mechanical work
             </h2>
 
             <p>
-              Technical work, fabrication, design, and other selected projects.
+              Technical work, fabrication, design, and other
+              selected projects.
             </p>
+
           </div>
 
         </article>
@@ -252,8 +265,9 @@
       </p>
 
       <p>
-        A short biography goes here. Keep it compact enough that the site
-        still feels like a personal art space first and a portfolio second.
+        A short biography goes here. Keep it compact enough that
+        the site still feels like a personal art space first and
+        a portfolio second.
       </p>
 
       <p>
@@ -276,7 +290,10 @@
     <div class="footer-index">
 
       <div>
-        <h2>Home</h2>
+
+        <h2>
+          Home
+        </h2>
 
         <a href="#home">
           Postcard
@@ -297,11 +314,15 @@
         >
           Stanford
         </button>
+
       </div>
 
 
       <div>
-        <h2>Board</h2>
+
+        <h2>
+          Board
+        </h2>
 
         <a href="#board">
           Images
@@ -314,11 +335,15 @@
         <a href="#board">
           Ephemera
         </a>
+
       </div>
 
 
       <div>
-        <h2>Work</h2>
+
+        <h2>
+          Work
+        </h2>
 
         <a href="#work">
           Projects
@@ -331,11 +356,15 @@
         <a href="#work">
           Selected work
         </a>
+
       </div>
 
 
       <div>
-        <h2>About</h2>
+
+        <h2>
+          About
+        </h2>
 
         <a href="#about">
           Biography
@@ -348,6 +377,7 @@
         <a href="#about">
           Links
         </a>
+
       </div>
 
     </div>
@@ -414,4 +444,5 @@
   <script src="script.js"></script>
 
 </body>
+
 </html>
